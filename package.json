@@ -4,9 +4,11 @@
   "description": "A Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node ./bin/www"
   },
   "dependencies": {
+    "coffee-script": "^1.9.3",
+    "debug": "^2.2.0",
     "express": "~4.9.x"
   },
   "engines": {

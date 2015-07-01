@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+require('coffee-script/register');
+var debug = require('debug')('king-crimson');
+var app = require('../king-crimson');
+
+app.set('port', (process.env.PORT || 5000));
+
+var server = app.listen(app.get('port'), function() {
+  console.log('King Crimson is running on port', server.address().port);
+});
