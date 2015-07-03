@@ -1,0 +1,11 @@
+web:
+  build: .
+  command: node ./bin/www
+  volumes:
+    - '.:/app/src'
+  links:
+    - db
+  ports:
+    - "3000:3000"
+db:
+  image: mongo
