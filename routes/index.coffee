@@ -2,6 +2,7 @@ fs         = require 'fs'
 readline   = require 'readline'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
+require('dotenv').load()
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
@@ -12,13 +13,10 @@ fs.readFile 'client_secret.json', processClientSecrets = (err, content) =>
   if (err)
     console.log('Error loading client secret file: ' + err)
     return
-  # Authorize a client with the loaded credentials, then call the
-  # Google Calendar API.
-  credentials = JSON.parse(content)
-  clientSecret = credentials.web.client_secret
-  clientId = credentials.web.client_id
-  redirectUrl = credentials.web.redirect_uris[0]
-  redirectUrl = "http://localhost:5000/auth/google/callback"
+
+  clientSecret = process.env.GOOGLE_CLIENT_SECRET
+  clientId     = process.env.GOOGLE_CLIENT_ID
+  redirectUrl  = process.env.GOOGLE_REDIRECT_URL
   auth = new googleAuth()
   @oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
 
