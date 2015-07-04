@@ -7,11 +7,9 @@ googleAuth = require 'google-auth-library'
 
 app = express()
 
+require('./routes')(app)
+
 app.use(express.static(__dirname + '/public'))
-
-app.get '/', (request, response) ->
-  response.send('『結果』だけだ！！この世には『結果』だけが残る！！')
-
 
 mongoose.connect('mongodb://db/king-crimson')
 db = mongoose.connection;
