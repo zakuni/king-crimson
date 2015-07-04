@@ -3,47 +3,52 @@ readline   = require 'readline'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
 
-module.exports = (app) ->
+SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
+    process.env.USERPROFILE) + '/.credentials/'
+TOKEN_PATH = TOKEN_DIR + 'calendar-api-quickstart.json'
+
+fs.readFile 'client_secret.json', processClientSecrets = (err, content) =>
+  if (err)
+    console.log('Error loading client secret file: ' + err)
+    return
+  # Authorize a client with the loaded credentials, then call the
+  # Google Calendar API.
+  credentials = JSON.parse(content)
+  clientSecret = credentials.web.client_secret
+  clientId = credentials.web.client_id
+  redirectUrl = credentials.web.redirect_uris[0]
+  redirectUrl = "http://localhost:5000/auth/google/callback"
+  auth = new googleAuth()
+  @oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
+
+  @authUrl = @oauth2Client.generateAuthUrl
+    access_type: 'offline'
+    scope: SCOPES
+
+
+###
+ Create an OAuth2 client with the given credentials, and then execute the
+ given callback function.
+
+ @param {Object} credentials The authorization client credentials.
+ @param {function} callback The callback to call with the authorized client.
+###
+authorize = (credentials, callback) =>
+  clientSecret = credentials.web.client_secret
+  clientId = credentials.web.client_id
+  redirectUrl = credentials.web.redirect_uris[0]
+  redirectUrl = "http://localhost:5000/auth/google/callback"
+  auth = new googleAuth()
+  @oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
+
+module.exports = (app) =>
   app.get '/', (request, response) ->
-
-    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-    TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-        process.env.USERPROFILE) + '/.credentials/'
-    TOKEN_PATH = TOKEN_DIR + 'calendar-api-quickstart.json'
-
-
     # Load client secrets from a local file.
-    fs.readFile 'client_secret.json', processClientSecrets = (err, content) ->
-      if (err)
-        console.log('Error loading client secret file: ' + err)
-        return
-      # Authorize a client with the loaded credentials, then call the
-      # Google Calendar API.
-      authorize JSON.parse(content), listEvents
+    response.send('『結果』だけだ！！この世には『結果』だけが残る！！')
 
-
-    ###
-     Create an OAuth2 client with the given credentials, and then execute the
-     given callback function.
-
-     @param {Object} credentials The authorization client credentials.
-     @param {function} callback The callback to call with the authorized client.
-    ###
-    authorize = (credentials, callback) ->
-      clientSecret = credentials.web.client_secret
-      clientId = credentials.web.client_id
-      redirectUrl = credentials.web.redirect_uris[0]
-      auth = new googleAuth()
-      oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
-
-      # Check if we have previously stored a token.
-      fs.readFile TOKEN_PATH, (err, token) ->
-        if err
-          getNewToken(oauth2Client, callback)
-        else
-          oauth2Client.credentials = JSON.parse(token)
-          callback(oauth2Client)
-
+  app.get '/auth/google', (request, response) =>
+    response.redirect @authUrl
 
     ###
      Get and store new token after prompting for user authorization, and then
@@ -54,11 +59,7 @@ module.exports = (app) ->
          client.
     ###
     getNewToken = (oauth2Client, callback) ->
-      authUrl = oauth2Client.generateAuthUrl
-        access_type: 'offline'
-        scope: SCOPES
-
-      console.log('Authorize this app by visiting this url: ', authUrl)
+      response.redirect authUrl
       # rl = readline.createInterface
       #   input: process.stdin
       #   output: process.stdout
@@ -73,13 +74,13 @@ module.exports = (app) ->
       #     storeToken(token)
       #     callback(oauth2Client)
 
-      oauth2Client.getToken "xxxxxxxxxxxxxxxx", (err, token) ->
-        if err
-          console.log('Error while trying to retrieve access token', err)
-          return
-        oauth2Client.credentials = token
-        storeToken(token)
-        callback(oauth2Client)
+      # oauth2Client.getToken "xxxxxxxxxxxxxxxx", (err, token) ->
+      #   if err
+      #     console.log('Error while trying to retrieve access token', err)
+      #     return
+      #   oauth2Client.credentials = token
+      #   storeToken(token)
+      #   callback(oauth2Client)
 
 
 
@@ -98,6 +99,38 @@ module.exports = (app) ->
       console.log('Token stored to ' + TOKEN_PATH)
 
 
+  app.get '/auth/google/callback', (request, response) =>
+    code = request.query.code
+    @oauth2Client.getToken code, (err, token) =>
+      if err
+        console.log('Error while trying to retrieve access token', err)
+        return
+      @oauth2Client.credentials = token
+      # storeToken(token)
+      # callback(oauth2Client)
+    # response.send(listEvents(@oauth2Client))
+
+      calendar = google.calendar('v3')
+      calendar.events.list
+        auth: @oauth2Client,
+        calendarId: 'primary',
+        timeMin: (new Date()).toISOString(),
+        maxResults: 10,
+        singleEvents: true,
+        orderBy: 'startTime'
+      , (err, res) ->
+        if err
+          response.send 'The API returned an error: ' + err
+        events = res.items
+        if events.length == 0
+          response.send 'No upcoming events found.'
+        else
+          # console.log('Upcoming 10 events:')
+          for event in events
+            start = event.start.dateTime || event.start.date
+            console.log('%s - %s', start, event.summary)
+          response.send events
+
     ###
      Lists the next 10 events on the user's primary calendar.
 
@@ -114,15 +147,12 @@ module.exports = (app) ->
         orderBy: 'startTime'
       , (err, response) ->
         if err
-          console.log('The API returned an error: ' + err)
-          return
+          return 'The API returned an error: ' + err
         events = response.items
         if events.length == 0
-          console.log('No upcoming events found.')
+          return 'No upcoming events found.'
         else
-          console.log('Upcoming 10 events:')
+          # console.log('Upcoming 10 events:')
           for event in events
             start = event.start.dateTime || event.start.date
             console.log('%s - %s', start, event.summary)
-
-    response.send('『結果』だけだ！！この世には『結果』だけが残る！！')
