@@ -1,5 +1,4 @@
 fs         = require 'fs'
-readline   = require 'readline'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
 require('dotenv').load()
@@ -9,31 +8,25 @@ TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/'
 TOKEN_PATH = TOKEN_DIR + 'calendar-api-quickstart.json'
 
-fs.readFile 'client_secret.json', processClientSecrets = (err, content) =>
-  if (err)
-    console.log('Error loading client secret file: ' + err)
-    return
+clientSecret = process.env.GOOGLE_CLIENT_SECRET
+clientId     = process.env.GOOGLE_CLIENT_ID
+redirectUrl  = process.env.GOOGLE_REDIRECT_URL
+auth = new googleAuth()
+oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
 
-  clientSecret = process.env.GOOGLE_CLIENT_SECRET
-  clientId     = process.env.GOOGLE_CLIENT_ID
-  redirectUrl  = process.env.GOOGLE_REDIRECT_URL
-  auth = new googleAuth()
-  @oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
-
-  @authUrl = @oauth2Client.generateAuthUrl
-    access_type: 'offline'
-    scope: SCOPES
+authUrl = oauth2Client.generateAuthUrl
+  access_type: 'offline'
+  scope: SCOPES
 
 
-module.exports = (app) =>
+module.exports = (app) ->
 
   app.get '/', (request, response) ->
-    # Load client secrets from a local file.
     response.send('『結果』だけだ！！この世には『結果』だけが残る！！')
 
 
-  app.get '/auth/google', (request, response) =>
-    response.redirect @authUrl
+  app.get '/auth/google', (request, response) ->
+    response.redirect authUrl
 
     ###
      Store token to disk be used in later program executions.
@@ -50,17 +43,17 @@ module.exports = (app) =>
       console.log('Token stored to ' + TOKEN_PATH)
 
 
-  app.get '/auth/google/callback', (request, response) =>
+  app.get '/auth/google/callback', (request, response) ->
     code = request.query.code
-    @oauth2Client.getToken code, (err, token) =>
+    oauth2Client.getToken code, (err, token) ->
       if err
         response.send 'Error while trying to retrieve access token: ' + err
         return
-      @oauth2Client.credentials = token
+      oauth2Client.credentials = token
 
       calendar = google.calendar('v3')
       calendar.events.list
-        auth: @oauth2Client,
+        auth: oauth2Client,
         calendarId: 'primary',
         timeMin: (new Date()).toISOString(),
         maxResults: 10,
