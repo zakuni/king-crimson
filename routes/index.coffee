@@ -22,7 +22,7 @@ authUrl = oauth2Client.generateAuthUrl
 module.exports = (app) ->
 
   app.get '/', (request, response) ->
-    response.send('『結果』だけだ！！この世には『結果』だけが残る！！')
+    response.render('index')
 
 
   app.get '/auth/google', (request, response) ->

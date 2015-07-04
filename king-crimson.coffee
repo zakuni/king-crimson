@@ -6,6 +6,7 @@ app = express()
 require('./routes')(app)
 
 app.use(express.static(__dirname + '/public'))
+app.set('view engine', 'jade')
 
 mongoose.connect('mongodb://db/king-crimson')
 db = mongoose.connection;
