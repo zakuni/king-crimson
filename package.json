@@ -10,6 +10,8 @@
     "coffee-script": "^1.9.3",
     "debug": "^2.2.0",
     "express": "~4.9.x",
+    "google-auth-library": "^0.9.6",
+    "googleapis": "^2.0.6",
     "mongoose": "^4.0.6"
   },
   "engines": {
