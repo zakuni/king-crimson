@@ -27,62 +27,15 @@ fs.readFile 'client_secret.json', processClientSecrets = (err, content) =>
     scope: SCOPES
 
 
-###
- Create an OAuth2 client with the given credentials, and then execute the
- given callback function.
-
- @param {Object} credentials The authorization client credentials.
- @param {function} callback The callback to call with the authorized client.
-###
-authorize = (credentials, callback) =>
-  clientSecret = credentials.web.client_secret
-  clientId = credentials.web.client_id
-  redirectUrl = credentials.web.redirect_uris[0]
-  redirectUrl = "http://localhost:5000/auth/google/callback"
-  auth = new googleAuth()
-  @oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
-
 module.exports = (app) =>
+
   app.get '/', (request, response) ->
     # Load client secrets from a local file.
     response.send('『結果』だけだ！！この世には『結果』だけが残る！！')
 
+
   app.get '/auth/google', (request, response) =>
     response.redirect @authUrl
-
-    ###
-     Get and store new token after prompting for user authorization, and then
-     execute the given callback with the authorized OAuth2 client.
-
-     @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
-     @param {getEventsCallback} callback The callback to call with the authorized
-         client.
-    ###
-    getNewToken = (oauth2Client, callback) ->
-      response.redirect authUrl
-      # rl = readline.createInterface
-      #   input: process.stdin
-      #   output: process.stdout
-
-      # rl.question 'Enter the code from that page here: ', (code) ->
-      #   rl.close()
-      #   oauth2Client.getToken code, (err, token) ->
-      #     if err
-      #       console.log('Error while trying to retrieve access token', err)
-      #       return
-      #     oauth2Client.credentials = token
-      #     storeToken(token)
-      #     callback(oauth2Client)
-
-      # oauth2Client.getToken "xxxxxxxxxxxxxxxx", (err, token) ->
-      #   if err
-      #     console.log('Error while trying to retrieve access token', err)
-      #     return
-      #   oauth2Client.credentials = token
-      #   storeToken(token)
-      #   callback(oauth2Client)
-
-
 
     ###
      Store token to disk be used in later program executions.
@@ -106,9 +59,6 @@ module.exports = (app) =>
         console.log('Error while trying to retrieve access token', err)
         return
       @oauth2Client.credentials = token
-      # storeToken(token)
-      # callback(oauth2Client)
-    # response.send(listEvents(@oauth2Client))
 
       calendar = google.calendar('v3')
       calendar.events.list
@@ -125,34 +75,7 @@ module.exports = (app) =>
         if events.length == 0
           response.send 'No upcoming events found.'
         else
-          # console.log('Upcoming 10 events:')
           for event in events
             start = event.start.dateTime || event.start.date
             console.log('%s - %s', start, event.summary)
           response.send events
-
-    ###
-     Lists the next 10 events on the user's primary calendar.
-
-     @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-    ###
-    listEvents = (auth) ->
-      calendar = google.calendar('v3')
-      calendar.events.list
-        auth: auth,
-        calendarId: 'primary',
-        timeMin: (new Date()).toISOString(),
-        maxResults: 10,
-        singleEvents: true,
-        orderBy: 'startTime'
-      , (err, response) ->
-        if err
-          return 'The API returned an error: ' + err
-        events = response.items
-        if events.length == 0
-          return 'No upcoming events found.'
-        else
-          # console.log('Upcoming 10 events:')
-          for event in events
-            start = event.start.dateTime || event.start.date
-            console.log('%s - %s', start, event.summary)
