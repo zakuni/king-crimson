@@ -3,7 +3,7 @@ readline   = require 'readline'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
 
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + '/.credentials/'
 TOKEN_PATH = TOKEN_DIR + 'calendar-api-quickstart.json'
@@ -56,7 +56,7 @@ module.exports = (app) =>
     code = request.query.code
     @oauth2Client.getToken code, (err, token) =>
       if err
-        console.log('Error while trying to retrieve access token', err)
+        response.send 'Error while trying to retrieve access token: ' + err
         return
       @oauth2Client.credentials = token
 
