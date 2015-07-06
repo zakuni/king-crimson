@@ -5,8 +5,11 @@ web:
     - '.:/app/src'
   links:
     - db
+    - redis
   ports:
     - "3000:3000"
   env_file: .env
 db:
   image: mongo
+redis:
+  image: redis
