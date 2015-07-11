@@ -1,7 +1,6 @@
 fs         = require 'fs'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
-require('dotenv').load()
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
