@@ -35,26 +35,26 @@ module.exports = (app) ->
         response.redirect '/tasks'
 
   app.get '/tasks', (request, response) ->
-    if request.session.token
-      oauth2Client.credentials = request.session.token
-    else
+    unless request.session.token
       response.redirect '/auth/google'
-    calendar = google.calendar('v3')
-    calendar.events.list
-      auth: oauth2Client,
-      calendarId: 'primary',
-      timeMin: (new Date()).toISOString(),
-      maxResults: 10,
-      singleEvents: true,
-      orderBy: 'startTime'
-    , (err, res) ->
-      if err
-        response.send 'The API returned an error: ' + err
-      events = res.items
-      if events.length == 0
-        response.send 'No upcoming events found.'
-      else
-        for event in events
-          start = event.start.dateTime || event.start.date
-          console.log('%s - %s', start, event.summary)
-        response.send events
+    else
+      oauth2Client.credentials = request.session.token
+      calendar = google.calendar('v3')
+      calendar.events.list
+        auth: oauth2Client,
+        calendarId: 'primary',
+        timeMin: (new Date()).toISOString(),
+        maxResults: 10,
+        singleEvents: true,
+        orderBy: 'startTime'
+      , (err, res) ->
+        if err
+          response.send 'The API returned an error: ' + err
+        events = res.items
+        if events.length == 0
+          response.send 'No upcoming events found.'
+        else
+          for event in events
+            start = event.start.dateTime || event.start.date
+            console.log('%s - %s', start, event.summary)
+          response.send events
