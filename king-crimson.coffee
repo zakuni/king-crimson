@@ -25,6 +25,7 @@ sess =
   cookie: { maxAge: 60 * 60 * 24 * 1000 }
 
 if process.env.NODE_ENV is "production"
+  app.set('trust proxy', 1)
   sess.cookie.secure = true
 
 app.use session(sess)
