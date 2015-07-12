@@ -13,11 +13,12 @@ app.set('view engine', 'jade')
 redisURL = url.parse(process.env.REDIS_URL) if process.env.REDIS_URL
 redisHost = if redisURL then redisURL.hostname else 'redis'
 redisPort = if redisURL then redisURL.port else '6379'
+redisClient = redis.createClient(redisPort, redisHost)
+redisClient.auth(redisURL.auth.split(":")[1]) if redisURL
 
 sess =
   store: new RedisStore
-    host: redisHost
-    port: redisPort
+    client: redisClient
   secret: process.env.SESSION_SECRET
   resave: false
   saveUninitialized: false
