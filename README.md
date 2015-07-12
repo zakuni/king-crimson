@@ -30,6 +30,7 @@ $ heroku docker:start
 $ heroku create
 $ heroku docker:release
 $ heroku config:set GOOGLE_CLIENT_ID=xxxx GOOGLE_CLIENT_SECRET=xxx GOOGLE_REDIRECT_URL=xxx SESSION_SECRET=xxx
+$ heroku addons:create heroku-redis
 $ heroku open
 ```
 
