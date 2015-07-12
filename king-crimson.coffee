@@ -12,6 +12,8 @@ app.set('view engine', 'jade')
 app.use session
   store: new RedisStore({host: 'redis', port: 6379})
   secret: process.env.SESSION_SECRET
+  resave: false
+  saveUninitialized: false
 
 require('./routes')(app)
 
