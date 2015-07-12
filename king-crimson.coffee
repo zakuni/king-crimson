@@ -22,7 +22,7 @@ sess =
   secret: process.env.SESSION_SECRET
   resave: false
   saveUninitialized: false
-  cookie: {}
+  cookie: { maxAge: 60 * 60 * 24 * 1000 }
 
 if process.env.NODE_ENV is "production"
   sess.cookie.secure = true
