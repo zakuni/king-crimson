@@ -31,7 +31,8 @@ module.exports = (app) ->
         response.send 'Error while trying to retrieve access token: ' + err
         return
       request.session.token = token
-      response.redirect '/tasks'
+      request.session.save ->
+        response.redirect '/tasks'
 
   app.get '/tasks', (request, response) ->
     if request.session.token
