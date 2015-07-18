@@ -18,6 +18,12 @@ $ docker-compose up
 $ open "http://$(docker-machine ip dev):3000"
 ```
 
+### Edit with a normal local workflow
+```sh
+$ docker-compose run --service-ports web bash  
+```
+
+
 ## Running Locally
 
 ```sh
