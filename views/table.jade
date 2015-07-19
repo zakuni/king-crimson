@@ -1,0 +1,5 @@
+extends layout
+block content
+  ul
+    each event in events
+      li= event.start.dateTime + " " + event.summary

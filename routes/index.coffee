@@ -1,3 +1,4 @@
+debug      = require('debug')('king-crimson:index')
 fs         = require 'fs'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
@@ -50,11 +51,10 @@ module.exports = (app) ->
       , (err, res) ->
         if err
           response.send 'The API returned an error: ' + err
-        events = res.items
-        if events.length == 0
-          response.send 'No upcoming events found.'
         else
-          for event in events
-            start = event.start.dateTime || event.start.date
-            console.log('%s - %s', start, event.summary)
-          response.send events
+          events = res.items
+          if events.length == 0
+            response.send 'No upcoming events found.'
+          else
+            debug events.type
+            response.render('table', {events: events})
