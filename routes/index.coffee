@@ -2,6 +2,7 @@ debug      = require('debug')('king-crimson:index')
 fs         = require 'fs'
 google     = require 'googleapis'
 googleAuth = require 'google-auth-library'
+React = require 'react'
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
@@ -15,6 +16,8 @@ authUrl = oauth2Client.generateAuthUrl
   access_type: 'offline'
   scope: SCOPES
 
+require('coffee-react/register')
+TableApp = require('../components/table.cjsx')
 
 module.exports = (app) ->
 
@@ -57,4 +60,9 @@ module.exports = (app) ->
             response.send 'No upcoming events found.'
           else
             debug events.type
-            response.render('table', {events: events})
+            response.render('table', {
+              events: events
+              table: React.renderToString(
+                React.createElement(TableApp, {events: events})
+              )
+            })
