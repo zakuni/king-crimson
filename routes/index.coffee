@@ -53,7 +53,8 @@ module.exports = (app) ->
         orderBy: 'startTime'
       , (err, res) ->
         if err
-          response.send 'The API returned an error: ' + err
+          debug err
+          response.redirect '/auth/google'
         else
           events = res.items
           if events.length == 0
