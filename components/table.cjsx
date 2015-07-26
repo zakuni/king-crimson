@@ -6,7 +6,7 @@ Table = React.createClass
       <tr key={event.id}>
         <td>{event.start.dateTime}</td><td>{event.summary}</td>
       </tr>
-    <table>
+    <table className="uk-table">
       {eventslist}
     </table>
 
