@@ -1,16 +1,15 @@
 debug      = require('debug')('king-crimson:index')
 fs         = require 'fs'
 google     = require 'googleapis'
-googleAuth = require 'google-auth-library'
 React = require 'react'
 
+OAuth2 = google.auth.OAuth2
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 clientSecret = process.env.GOOGLE_CLIENT_SECRET
 clientId     = process.env.GOOGLE_CLIENT_ID
 redirectUrl  = process.env.GOOGLE_REDIRECT_URL
-auth = new googleAuth()
-oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
+oauth2Client = new OAuth2(clientId, clientSecret, redirectUrl)
 
 authUrl = oauth2Client.generateAuthUrl
   access_type: 'offline'
