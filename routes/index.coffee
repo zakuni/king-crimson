@@ -35,9 +35,9 @@ module.exports = (app) ->
         return
       request.session.token = token
       request.session.save ->
-        response.redirect '/tasks'
+        response.redirect '/schedules'
 
-  app.get '/tasks', (request, response) ->
+  app.get '/schedules', (request, response) ->
     unless request.session.token
       response.redirect '/auth/google'
     else
