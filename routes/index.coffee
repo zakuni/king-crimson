@@ -61,7 +61,7 @@ module.exports = (app) ->
           else
             debug events.type
             response.render('table', {
-              events: events
+              initialData: events
               table: React.renderToString(
                 React.createElement(TableApp, {events: events})
               )
