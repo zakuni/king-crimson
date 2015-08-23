@@ -1,6 +1,8 @@
 {
   "name": "King Crimson",
   "description": "A Node.js app using Express 4",
+  "image": "heroku/nodejs",
+  "addons": [ "heroku-redis" ],
   "repository": "https://github.com/zakuni/king-crimson",
   "logo": "http://node-js-sample.herokuapp.com/node.svg",
   "keywords": ["node", "express", "static"]

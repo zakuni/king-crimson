@@ -1,14 +1,29 @@
 web:
   build: .
-  command: node ./bin/www
-  volumes:
-    - '.:/app/src'
+  command: 'bash -c ''npm start'''
+  working_dir: /app/user
+  environment:
+    PORT: 8080
+  ports:
+    - '8080:8080'
+  env_file: .env
   links:
     - db
     - redis
+shell:
+  build: .
+  command: bash
+  working_dir: /app/user
+  environment:
+    PORT: 8080
   ports:
-    - "3000:3000"
+    - '8080:8080'
+  volumes:
+    - '.:/app/user'
   env_file: .env
+  links:
+    - db
+    - redis
 db:
   image: mongo
 redis:
