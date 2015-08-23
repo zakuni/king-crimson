@@ -1,5 +1,5 @@
 React = require 'react'
-Gantt = require './table'
+Gantt = require './gantt'
 
 initialState = JSON.parse(document.getElementById('initial-data').getAttribute('data-json'))
 

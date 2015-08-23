@@ -16,7 +16,7 @@ authUrl = oauth2Client.generateAuthUrl
   scope: SCOPES
 
 require('coffee-react/register')
-Gantt = require('../components/table.cjsx')
+Gantt = require('../components/gantt.cjsx')
 
 module.exports = (app) ->
 
