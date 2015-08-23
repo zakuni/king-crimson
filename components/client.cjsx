@@ -1,8 +1,9 @@
 React = require 'react'
-Table = require './table'
+Gantt = require './table'
+
 initialState = JSON.parse(document.getElementById('initial-data').getAttribute('data-json'))
 
 React.render(
-  <Table events={initialState} />,
-  document.getElementById('table')
+  <Gantt events={initialState} />,
+  document.getElementById('gantt')
 )

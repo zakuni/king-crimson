@@ -1,6 +1,6 @@
 React = require 'react'
 
-Table = React.createClass
+Gantt = React.createClass
   render: ->
     eventslist = @props.events.map (event) ->
       <tr key={event.id}>
@@ -23,4 +23,4 @@ Table = React.createClass
       </tbody>
     </table>
 
-module.exports = Table
+module.exports = Gantt

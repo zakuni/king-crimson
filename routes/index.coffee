@@ -16,7 +16,7 @@ authUrl = oauth2Client.generateAuthUrl
   scope: SCOPES
 
 require('coffee-react/register')
-TableApp = require('../components/table.cjsx')
+Gantt = require('../components/table.cjsx')
 
 module.exports = (app) ->
 
@@ -63,7 +63,7 @@ module.exports = (app) ->
             debug events.type
             response.render('table', {
               initialData: events
-              table: React.renderToString(
-                React.createElement(TableApp, {events: events})
+              gantt: React.renderToString(
+                React.createElement(Gantt, {events: events})
               )
             })
