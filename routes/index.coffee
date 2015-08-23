@@ -31,6 +31,7 @@ module.exports = (app) ->
     code = request.query.code
     oauth2Client.getToken code, (err, token) ->
       if err
+        debug err
         response.send 'Error while trying to retrieve access token: ' + err
         return
       request.session.token = token
