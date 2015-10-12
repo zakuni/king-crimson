@@ -2,25 +2,15 @@ React = require 'react'
 
 Gantt = React.createClass
   render: ->
-    eventslist = @props.events.map (event) ->
-      <tr key={event.id}>
-        <td>{event.summary}</td>
-        <td>
-          <div>{event.start.dateTime}</div>
-          <div>{event.end.dateTime}</div>
-        </td>
-      </tr>
+    eventslist = @props.events.map (event, i) ->
+      <g key={event.id}>
+        <text x="20" y="#{(i*40)+42}">{event.summary}</text>
+        <text x="520" y="#{(i*40)+42}">{event.start.dateTime}</text>
+        <text x="720" y="#{(i*40)+42}">{event.end.dateTime}</text>
+      </g>
 
-    <table className="uk-table">
-      <thead>
-        <tr>
-          <th>Task</th>
-          <th>time</th>
-        </tr>
-      </thead>
-      <tbody>
-        {eventslist}
-      </tbody>
-    </table>
+    <svg className="uk-height-1-1" width="100%">
+      {eventslist}
+    </svg>
 
 module.exports = Gantt
