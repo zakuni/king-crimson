@@ -39,5 +39,11 @@
     "heroku",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.0.14",
+    "babel-loader": "^6.0.0",
+    "babel-preset-es2015": "^6.0.14",
+    "babel-preset-react": "^6.0.14"
+  }
 }

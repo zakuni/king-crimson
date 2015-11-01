@@ -5,10 +5,18 @@ module.exports = {
   },
   module: {
     loaders: [
-      {test: /\.cjsx$/, loaders: ['coffee', 'cjsx']}
+      {test: /\.cjsx$/, loaders: ['coffee', 'cjsx']},
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel',
+        query: {
+          presets: ['es2015', 'react']
+        }
+      }
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.cjsx', '.coffee']
+    extensions: ['', '.js', '.jsx', '.cjsx', '.coffee']
   }
 };
