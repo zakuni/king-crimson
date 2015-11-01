@@ -1,4 +1,5 @@
 React = require 'react'
+moment = require 'moment'
 
 Gantt = React.createClass
   render: ->
