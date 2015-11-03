@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 require('dotenv').load();
 require('coffee-script/register');
+require('babel-core/register')({
+  presets: ["es2015", "react"]
+});
 var debug = require('debug')('king-crimson');
 var app = require('../king-crimson');
 
