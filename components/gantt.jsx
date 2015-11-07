@@ -27,10 +27,11 @@ class Gantt extends React.Component {
           .text(function(event){ return moment(event.end.dateTime).format('ddd, MMM DD hh:mm') })
           .attr("y", function(d, i){ return (i*40)+42 });
 
-        selection.append('text')
-          .text(function(event){ return moment(event.end.dateTime).diff(moment(event.start.dateTime), "minutes")})
           .attr("x", "920")
-          .attr("y", function(d, i){ return (i*40)+42 });
+        selection.append('rect')
+          .attr("y", function(d, i){ return (i*40)+32 })
+          .attr("height", 10)
+          .attr("width", function(event){ return moment(event.end.dateTime).diff(moment(event.start.dateTime), "minutes") });
       });
   }
   render() {
