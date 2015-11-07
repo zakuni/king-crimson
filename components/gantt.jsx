@@ -18,13 +18,13 @@ class Gantt extends React.Component {
           .attr("y", function(d, i){ return (i*40)+42 });
 
         selection.append('text')
-          .text(function(event){ return event.start.dateTime })
+          .text(function(event){ return moment(event.start.dateTime).format('ddd, MMM DD hh:mm') })
           .attr("x", 520)
           .attr("y", function(d, i){ return (i*40)+42 });
 
         selection.append('text')
-          .text(function(event){ return event.end.dateTime })
           .attr("x", "720")
+          .text(function(event){ return moment(event.end.dateTime).format('ddd, MMM DD hh:mm') })
           .attr("y", function(d, i){ return (i*40)+42 });
 
         selection.append('text')
