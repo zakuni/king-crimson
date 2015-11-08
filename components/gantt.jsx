@@ -15,7 +15,7 @@ class Gantt extends React.Component {
         d3.min(this.props.events, function(d) { return moment().format("x") }),
         d3.min(this.props.events, function(d) { return moment().add(1, 'd').format("x") })
       ])
-      .range([600, 1120]);
+      .range([300, 1120]);
     var xAxis = d3.svg.axis().scale(xScale).ticks(12).tickFormat(d3.time.format("%d %H:%M"));
     d3.select(React.findDOMNode(this)).append('g').call(xAxis);
 
@@ -24,16 +24,6 @@ class Gantt extends React.Component {
         selection.append('text')
           .text(function(event){ return event.summary })
           .attr("x", 20)
-          .attr("y", function(d, i){ return (i*40)+42 });
-
-        selection.append('text')
-          .text(function(event){ return moment(event.start.dateTime).format('ddd, MMM DD HH:mm') })
-          .attr("x", 320)
-          .attr("y", function(d, i){ return (i*40)+42 });
-
-        selection.append('text')
-          .text(function(event){ return moment(event.end.dateTime).format('ddd, MMM DD HH:mm') })
-          .attr("x", "470")
           .attr("y", function(d, i){ return (i*40)+42 });
 
         selection.append('rect')
