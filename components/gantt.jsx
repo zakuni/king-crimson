@@ -10,6 +10,15 @@ class Gantt extends React.Component {
     var task = tasks.selectAll(".task")
       .data(this.props.events);
 
+    var xScale = d3.time.scale()
+      .domain([
+        d3.min(this.props.events, function(d) { return moment().format("x") }),
+        d3.min(this.props.events, function(d) { return moment().add(1, 'd').format("x") })
+      ])
+      .range([600, 1120]);
+    var xAxis = d3.svg.axis().scale(xScale).ticks(12).tickFormat(d3.time.format("%d %H:%M"));
+    d3.select(React.findDOMNode(this)).append('g').call(xAxis);
+
     task.enter().append('g').attr('class', 'task')
       .call( (selection) => {
         selection.append('text')
@@ -18,20 +27,22 @@ class Gantt extends React.Component {
           .attr("y", function(d, i){ return (i*40)+42 });
 
         selection.append('text')
-          .text(function(event){ return moment(event.start.dateTime).format('ddd, MMM DD hh:mm') })
-          .attr("x", 520)
+          .text(function(event){ return moment(event.start.dateTime).format('ddd, MMM DD HH:mm') })
+          .attr("x", 320)
           .attr("y", function(d, i){ return (i*40)+42 });
 
         selection.append('text')
-          .attr("x", "720")
-          .text(function(event){ return moment(event.end.dateTime).format('ddd, MMM DD hh:mm') })
+          .text(function(event){ return moment(event.end.dateTime).format('ddd, MMM DD HH:mm') })
+          .attr("x", "470")
           .attr("y", function(d, i){ return (i*40)+42 });
 
-          .attr("x", "920")
         selection.append('rect')
+          .attr("x", function(event) { return xScale(moment(event.start.dateTime).format("x")) })
           .attr("y", function(d, i){ return (i*40)+32 })
           .attr("height", 10)
-          .attr("width", function(event){ return moment(event.end.dateTime).diff(moment(event.start.dateTime), "minutes") });
+          .attr("width", function(event){
+            return xScale(moment(event.end.dateTime).format("x"))-xScale(moment(event.start.dateTime).format("x"))
+          });
       });
   }
   render() {
