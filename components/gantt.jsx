@@ -16,7 +16,7 @@ class Gantt extends React.Component {
         d3.min(this.props.events, function(d) { return moment().add(1, 'd').format("x") })
       ])
       .range([300, 1120]);
-    var xAxis = d3.svg.axis().scale(xScale).ticks(12).tickFormat(d3.time.format("%d %H:%M"));
+    var xAxis = d3.svg.axis().scale(xScale).ticks(12).tickFormat(d3.time.format("%H:%M"));
     d3.select(React.findDOMNode(this)).append('g').call(xAxis);
 
     task.enter().append('g').attr('class', 'task')
@@ -28,11 +28,12 @@ class Gantt extends React.Component {
 
         selection.append('rect')
           .attr("x", function(event) { return xScale(moment(event.start.dateTime).format("x")) })
-          .attr("y", function(d, i){ return (i*40)+32 })
-          .attr("height", 10)
+          .attr("y", function(d, i){ return (i*40)+27 })
+          .attr("height", 18)
           .attr("width", function(event){
             return xScale(moment(event.end.dateTime).format("x"))-xScale(moment(event.start.dateTime).format("x"))
-          });
+          })
+          .attr("fill", "steelblue");
       });
   }
   render() {
