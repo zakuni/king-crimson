@@ -2,14 +2,26 @@
 
 > 我以外の全ての時間は消し飛ぶッーーーー！
 
-## Development
-
-Make sure you have [Docker Machine](https://docs.docker.com/machine/) and [Docker Compose](https://docs.docker.com/compose/) installed.
+## Clone Project
 
 ```sh
 git clone git@github.com:zakuni/king-crimson.git # or clone your own fork
 cd king-crimson
 touch .env # and modify as .env_sample
+```
+
+## Running Locally
+
+```sh
+heroku docker:start
+```
+
+## Development
+
+Make sure you have [Docker Machine](https://docs.docker.com/machine/) and [Docker Compose](https://docs.docker.com/compose/) installed.
+
+```sh
+cd king-crimson
 docker-machine start dev
 eval "$(docker-machine env dev)"
 docker-compose up
@@ -22,13 +34,8 @@ open "http://$(docker-machine ip dev):3000"
 ### Edit with a normal local workflow
 
 ```sh
-docker-compose run --service-ports shell
-```
-
-## Running Locally
-
-```sh
-heroku docker:start
+docker-compose run --service-ports shell #instead of deocker-compose up
+# and then, do npm start or npm run start-dev or whatever...
 ```
 
 ## Deploying to Heroku
