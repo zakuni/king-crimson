@@ -9,6 +9,7 @@ Make sure you have [Docker Machine](https://docs.docker.com/machine/) and [Docke
 ```sh
 git clone git@github.com:zakuni/king-crimson.git # or clone your own fork
 cd king-crimson
+touch .env # and modify as .env_sample
 docker-machine start dev
 eval "$(docker-machine env dev)"
 docker-compose up
