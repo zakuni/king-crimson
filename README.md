@@ -10,12 +10,6 @@ cd king-crimson
 touch .env # and modify as .env_sample
 ```
 
-## Running Locally
-
-```sh
-heroku docker:start
-```
-
 ## Development
 
 Make sure you have [Docker Machine](https://docs.docker.com/machine/) and [Docker Compose](https://docs.docker.com/compose/) installed.
