@@ -24,13 +24,13 @@
     "jade": "^1.11.0",
     "moment": "^2.10.6",
     "mongoose": "^4.3.1",
-    "node-libs-browser": "^1.0.0",
+    "node-libs-browser": "^0.5.0",
     "react": "^0.14.7",
     "redis": "^2.5.2",
     "webpack": "^1.12.9"
   },
   "engines": {
-    "node": "0.12.2"
+    "node": "4.3.0"
   },
   "repository": {
     "type": "git",

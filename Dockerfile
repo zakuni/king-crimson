@@ -1,1 +1,1 @@
-FROM heroku/nodejs
+FROM binarytales/heroku-nodejs:4.3.0
