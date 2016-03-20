@@ -9,9 +9,6 @@
   },
   "dependencies": {
     "babel-cli": "^6.3.17",
-    "cjsx-loader": "^2.1.0",
-    "coffee-loader": "^0.7.2",
-    "coffee-react": "^4.0.0",
     "coffee-script": "^1.10.0",
     "connect-redis": "^3.0.2",
     "d3": "^3.5.10",

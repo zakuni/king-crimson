@@ -1,11 +1,10 @@
 module.exports = {
-  entry: './components/client.cjsx',
+  entry: './components/client.jsx',
   output: {
     filename: './public/js/bundle.js'
   },
   module: {
     loaders: [
-      {test: /\.cjsx$/, loaders: ['coffee', 'cjsx']},
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
@@ -17,6 +16,6 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.cjsx', '.coffee']
+    extensions: ['', '.js', '.jsx']
   }
 };

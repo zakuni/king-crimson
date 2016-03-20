@@ -15,7 +15,6 @@ authUrl = oauth2Client.generateAuthUrl
   access_type: 'offline'
   scope: SCOPES
 
-require('coffee-react/register')
 Gantt = require('../components/gantt.jsx')
 
 module.exports = (app) ->
