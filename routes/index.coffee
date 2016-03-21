@@ -2,6 +2,7 @@ debug      = require('debug')('king-crimson:index')
 fs         = require 'fs'
 google     = require 'googleapis'
 React = require 'react'
+ReactDOMServer = require 'react-dom/server'
 
 OAuth2 = google.auth.OAuth2
 SCOPES = ['https://www.googleapis.com/auth/calendar']
@@ -62,7 +63,7 @@ module.exports = (app) ->
             debug events.type
             response.render('table', {
               initialData: events
-              gantt: React.renderToString(
+              gantt: ReactDOMServer.renderToString(
                 React.createElement(Gantt, {events: events})
               )
             })

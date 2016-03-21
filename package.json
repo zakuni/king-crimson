@@ -23,6 +23,7 @@
     "mongoose": "^4.3.1",
     "node-libs-browser": "^0.5.0",
     "react": "^0.14.7",
+    "react-dom": "^0.14.7",
     "redis": "^2.5.2",
     "webpack": "^1.12.9"
   },
